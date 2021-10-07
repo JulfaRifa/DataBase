@@ -1,0 +1,260 @@
+Normalisation reduces redundancy in data.
+
+ADVANTAGES OF DBMS:
+1.reduced data redundancy
+2.data consistency
+3.multiple user access.
+4.easy modifications amd easy retrieval.
+
+DISADVANTAGES OF DBMS:
+1. Accessibilty for non-programmer is difficult.
+
+metadata - a data's size, dependancy of a data, etc.,
+
+USERS OF A DBMS:
+1. DB Admin
+2. Developer
+3. End user
+
+ER DIAGRAM:(Diagrammetic representation of a dbms)
+Entity - Rectangle
+Weak Entity - Double Rectangle(an entity that strongly depends on other entity. ex: installemt entity strongly depends)
+Relation - Diamond - Type 1 : one to one relationship
+					 Type 2 : one to many relationship / many to one
+					 Type 3 : Many to many relationship
+Weak Relation - Double Diamond
+Attribute - Oval
+Key Attribute - Oval with underline
+Composite Attribute - address having city, state and zip code(city, state and zip code).
+Derived Attribute - dashed oval(age is derived from date of birth)
+Multivalued attribute - double oval(phone number can have multiple(many) values for a single person)
+Entity type - collection of entities with the same attributes.
+Entity set - collection of entities with the same attributes in a database.
+
+DBMS - have no relation between data, do not have normalization, do not have ACID properties for security, ex- file system, xml.
+RDBMS - have relation between data through tables, have normalization, have ACID properties for security, ex- mysql, oracle, postgre.
+
+Relational Model is designed using tables.
+
+Entity is a real world oject.
+
+TYPES OF KEY IN DBMS:(https://www.studytonight.com/dbms/database-key.php)
+1. Super key - an attribute or a set of attributes which helps in unique identification of data in the table. Super key is a superset of candidate key.(student_id,{student_id,name},{student_id,age},{phone,name},{phone,name},phone).
+student_id	name	phone	age
+1	Akon	9876723452	17
+2	Akon	9991165674	19
+3	Bkon	7898756543	18
+4	Ckon	8987867898	19
+5	Dkon	9990080080	17
+2. Candidate key - an attribute or more than one attriute which helps in uniquely identifying data in the table. Candidate key can never be null or empty.(student_id,phone).
+3. Composite key(Foreign key) - more than one primary key of a table(ex: a table with attributes - subject_id, student_id, mark, exam_name - subject_id, student_id is a composite key)
+
+Tuple - row
+
+Primary key attribute should never be null.
+
+Foreign key - referential Integerity
+
+RELATIONAL ALGEBRA:(https://www.studytonight.com/dbms/relational-algebra.php)
+1. select (σ ) - select rows in a table.
+2. project (∏) - select whole columns in a table(no condition).
+3. Union (∪ ) - gives union of two tables having a common column without repitition.
+4. set difference (- ) - (A-B) gives the rows in A class that are not present in B class.
+5. Cartesian product (X) - give sthe multiplication of two tables with duplication.
+6. Rename operation (ρ) - used to rename the output of select/project. ex:ρ(RelationNew, RelationOld) - RelationOld is the output which will be renamed as RelationNew according to ρ.4
+select, project and rename are unary operators in relational-algebra.
+relational-algebra is a procedural query language which contains set of operations that take one or two relation and forms a new relationship.
+
+RELATIONAL CALCULUS - Non-procedural Query Language.
+Two types - 1. Domain Relational Calculus 	2. Tuple Relational Calculus.
+
+NORMALIZATION:
+1NF - no multivalued attribute(only atomic value)
+2NF - should be in 1NF. no partial dependancy(split the table)
+3NF  no transitive dependancy(non prime attribute depending on other attribute)(split the table)
+Boyce-Codd Normal Form(BCNF)/3.5NF - extension of 3NF. for any dependancy A->B, A should be a primary key.
+4NF - should be in BCNF. no multivalued dependancy.
+2NF - Identify the candidate key. No non prime attribute depends on proper subset of any candidate key.
+3NF - A->B->C. SO, A->C, which is transitive dependancy. not allowed in 3NF. split the table.
+
+SQL TYPES:
+DDL - CATDR(Create, Alter, Truncate, Drop, Rename) - deals with whole table.
+	  CREATE TABLE table_name(column_name1 datatype, column_name2 datatype, column_name3 datatype)
+	  ALTER TABLE table_name ADD column_name4 datatype-> adds a new ccolumn to a table.
+	  ALTER TABLE table_name ADDcolumn_name4 datatype DEFAULT '00-aaa-0000' -> sets a default value to the column values.
+	  ALTER TABLE table_name MODIFY COLUMN column_name4 datatype1 -> modifies the datatype of an existing column.
+	  ALTER TABLE table_name RENAME COLUMN column_name4 TO column_name5 - >renames an existing column name to a new name.
+	  ALTER TABLE table_name DROP COLUMN column_name5 -> drops the column from the field.
+	  TRUNCATE TABLE table_name -> delete the entire rows of a table.
+	  DROP TABLE table_name -> delete the entire table including all rows and columns.
+	  DROP DATABASE database_name
+	  RENAME TABLE table_name1 TO table_name2 
+DML - DMUI(Delete, Merge, Update, Insert) - deals with data in the table.
+	  INSERT INTO table_name (attribute1, attribute2, attribute3) VALUES ( attribute1_value, attribute2_value, attribute3_value)
+	  INSERT INTO table_name VALUES (attribute1_value, attribute2_value, attribute3_value)//for sequential access.
+	  INSERT INTO table_name VALUES (attribute1_value, attribute2_value, default) -> inserts default value to the attribute3_value.
+If an attribute have default value set during creation, not defining its value in insert command will insert default value else null will be inserted while not defined in insert command.
+	  UPDATE table_name SET column_name = value WHERE column_name1 = value 1
+	  DELETE FROM table_name
+TRUNCATE(no where clause, cannot be rolled back) command delete the complete rows in a table and reinitializes the table as a fresh table. Adding a row after truncate, will have its primary key as 1.
+DELETE(have where clause, can be rolled back) command delete the rows in a table with a where clause but not reinitializes the table. Adding a row after delete command, will have its primary key as an increment of last one.
+DELETE F
+TWO TYPES OF DML - 1. Procedural/Low-level -> specifies what data to be modified and how the data should be modified.
+				   2. Non-procedural/High-level -> specifies what data to be modified, but not how the data should be modified.
+TCL(Transaction Control Language) - Commit(permanent save), Rollback(undo the change), Savepoint(temporary save).
+	  COMMIT;
+	  SAVEPOINT save_point_name;
+	  ROLLBACK TO save_point_name;
+DCL(Data Control Language) - grant, revoke
+	  Privileges are of two types : 1. System - allows creation of table. 2. Object - allows, querying, analysing table.
+DQL - select
+
+float 6-7 digit precision after decimal point
+double 15-16 digit precision after decimal point(preferrable)
+float can be converted to double, but double cannot be converted to float.
+
+ORDER BY:
+default ASC
+
+ORDER OF SQL OPERATION:
+FROM/JOIN, WHERE, GROUP BY, HAVING, WINDOW function, SELECT, DISTINCT, UNION, ORDER BY, LIMIT and OFFSET.
+Offset -> number of rows to skip from the outtput derived.
+ex-select the third maximum salary from employee table.
+SELECT MAX(SALARY) FROM EMPLOYEE ORDER BY SALARY DESC LIMIT 1 OFFSET 2/ SELECT MAX(SALARY) FROM EMPLOYEE ORDER BY SALARY DESC LIMIT 2,1
+LIMIT(Offset,limit value)
+
+HAVING - is a condition(where) clause when GROUP BY is used.
+
+DISTINCT - removes duplicate data.
+
+SUBQUERY:
+ALL - all the row from subquery should match the condition in main query.
+ANY/SOME - any row or some of the row in the subquery should match the main query.
+ex - SELECT ProductName
+FROM Products
+WHERE ProductID = ANY
+  (SELECT ProductID
+  FROM OrderDetails
+  WHERE Quantity = 10);
+
+SQL CONSTRAINTS:
+1. NOT NULL constraint - by default, a column can contain null values. If the column should not contain null value, specify NOT NULL keyword during creation of table/column or with alter/modify command.
+2. UNIQUE constraint- If the column values should be unique, specify UNIQUE keyword during creation of table/column or with alter/modify command.
+3. PRIMARY KEY constraint
+4. FOREIGN KEY constraint - CREATE TABLE table_name1 (attribute_name datatype FOREIGN KEY REFERENCES table_name2(a column of table_name2)
+5. CHECK constraint - checks the value of a column whether satisfies the condition specified within the check constraint) -> CHECK(column_name condition)
+ex - CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CHECK (Age>=18)
+);
+
+SQL FUNCTIONS:
+1. AGGREGATE FUNCTIONS:
+	SUM(), MAX(),MIN(), AVG(), FIRST(), LAST(), COUNT(DISTINCT column_name),COUNT().
+2. SCALAR FUNCTIONS:
+	UCASE()/UPPER() -> all letters in uppercase.
+	LCASE()/LOWER() -> all letters in lowercase.
+	INITCAP()
+	MID(column_name, start index, length) -> gives the letters in the column_name from start index position and with the length.
+	ROUND(column_name, decimals) -> round the value. ex-ROUND(900.45) = 900, ROUND(900.53) = 901, ROUND(900.83) = 900.
+3. CHARACTER MANIPULATION FUNCTION:
+	CONCAT(String1, String2)
+	SUBSTR(String1, start_index, length)
+	LENGTH(String1)
+	INSTR(String1,part_of_string1)
+	LPAD(string1, length, lpad_string) - SELECT LPAD("SQL Tutorial", 20, "ABC") -> ABCABCABSQL Tutorial -> Leftpad SQL Tutorial with ABC till the output string length becomes 30
+	RPAD(string, length, rpad_string)
+	TRIM(part_of_string1 FROM String1)
+	REPLACE ( 'It is the best coffee at the famous coffee shop.', 'coffee', 'tea');
+
+	
+JOINS:
+1. INNER/EQUI JOIN - joins two table where there is a common clumn with common values.
+2. OUTER JOIN - LEFT OUTER JOIN, RIGHT OUTER JOIN, FULL OUTER JOIN.
+3. CROSS JOIN or CARTESIAN PRODUCT -> each row of table 1 product with each row of table2, irrespective of having common column between two tables.
+4. SELF JOIN
+In INNER JOIN, where clause should be specified for common column of two table. 
+In NATURAL JOIN, where clause is not needed. Implicitly, common column with compatible datatype is considered.
+FULL OUTER JOIN -> considers all the rows from both the tables irrespective of common column.
+output number of row in FULLL OUTER JOIN is maximum number of row in table1/table2, whereas output number of row in CROSS JOIN is number of row in table1* number of row in table2.
+
+SQL Alias - AS keyword(applicable to table, column)
+
+SQL SET OPERATIONS:(occurs between only select statement)
+1. UNION - gives the union of two tables without duplication.
+2. UNION ALL - gives the union of two tables with duplication.
+3. INTERSECT - gives the common value between two table.
+4. MINUS.
+
+ACID PROPERTIES:
+Atomicity- transaction should be executed completely or transaction should not be executed at all. No partial transaction.
+ex - A (before - 100, debit to B - 20 = 100-20=80), B(before - 20, credited from A - 20 = 20+20=40) -> full execution, no error in data.
+Consistency - the value read during transaction should be correct/consistent.
+ex - A(before - 100, debit to B - 10 = 100-10=90, debit to C = 20, 90-20=70), B(before 20, credit from A - 10, 20+10=30), C(before - 20, credit from A - 20+20=40)
+value read by B from A is 100 for T1 and value read by C from A is 90 for T2, which is reda after T1). If value read is incorrect in T1 or T2, data is inconsistent.
+Isolation - Though transactions occur concurrently, one should not affect the other/ isolated.
+ex - T1 and T2 should be executed isolated, so data is consistent.
+Durability - When the transaction is made, the change should be saved permanently. Durability should be long. Commit is used. data should persist.
+
+NULL is different from 0 or blank space as NULL means unknown where 0 is a number and blank space is a character.
+
+DIFFERENT LEVELS OF DATA ABSTRACTION IN DBMS:
+1. Physical level - contains database.
+2. Logical level/Conceptual level - developer work. contains logic.
+3. View level/Extrenal level - UI
+Data abstraction - process of hiding irrelevant details of a database from user.
+
+INTENSION AND EXTENSION IN DBMS:
+Intension - database schema. designed during creation. remains unchanged.
+Extension - tuples present inside database schema. changes when modified.
+
+LOCK IN DBMS:
+Lock is introduced to avoid concurrency issue when two persons try to access same transaction.
+When two persons try to access same transaction at the same time, lock helps in locking the transaction for one person till the transaction is completed by that person.
+Shared lock - lock is shared between persons, but read only access is given to the two persons, so, they cannot update the transaction.
+Exclusive lock - read-write access.
+
+NORMALIZATION AND DENORMALIZATION:
+Normalization - reduces data redundancy and organizes the data in the table.
+Denormalization - reverse process of normalizatin where splitted tables are combined into a single table which makes data access faster. JOIN operation helps in combining the table.
+
+2-TIER ARCHITECTURE - Client and Server model
+3-TIER ARCHITECTURE - there is a layer between client and server called GUI(Graphical User Interface)
+
+Checkpoint - a mechanism where all the transaction logs done till that time is removed and stored in a permannet storage.
+helps in retrieving the data(logs) when crash occurs in a database.
+
+Transparent DBMS - a DBMS which hides its physical structure from users. Physical structure means the memory manager of DBMS.
+
+Data Integrity - two types - 1. Entity Integerity -> specifies that primary key cannot have NULL value.
+							 2. Referential Integerity -> specifies that foreign key can be either null or should be a primary key of another table.
+							 
+Data Independance - When data in physical layer is modified, should not affect the data in Logical layer. Two types - 1. Physical Data Independance 2. Logical Data Independance
+
+Stored procedure - a group of sql statement created(procedure) and stored in a database. As the procedure is stored in a database, it can be used again when needed(reusability).
+
+SQL query to get current date is GetDate().
+
+NVL() - replaces NULL value with the second parameter value.
+If the column specified in first parameter do not have NULL value, it is left unchanged.
+used in Oracle and not in SQL or MySQL.
+
+MySQL is an RDBMS that uses Sql language for querying.
+
+MOD(16,3) - gives the reminder of two numbers -> MOD(16,3) = 1
+
+primary key drop
+column datatype change, compatible data type 
+String to integer column datatype change.
+default value change to customized value.
+two constraint in a single column)unique, not null
+constraint definition other way
+UPDATE table_name SET column_name = value WHERE column_name1 = value 1
+DELETE FROM table_name
+DELETE where 1=1
+
+
+CREATE TABLE abc (id number PRIMARY KEY, name varchar(20) UNIQUE NOT NULL, department_id REFERENCES(column_name table_name))
